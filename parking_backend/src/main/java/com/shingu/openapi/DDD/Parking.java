@@ -39,5 +39,6 @@ public class Parking {
     private String spcmnt;                // 특이 사항 (없을 수 있음)
     private String institutionNm;         // 관리 기관 이름
     private String phoneNumber;           // 전화번호 (없을 수 있음)
-
+    private String latitude;              // 위도 (없을 수 있음)
+    private String longitude;             // 경도 (없을 수 있음)
 }

@@ -3,7 +3,6 @@ package com.shingu.openapi;
 import com.shingu.openapi.DDD.Parking;
 import com.shingu.openapi.DDD.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service

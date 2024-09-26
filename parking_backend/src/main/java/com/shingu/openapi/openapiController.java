@@ -16,7 +16,7 @@ import java.net.URL;
 
 @RestController
 @RequestMapping("/api")
-public class openapiController { //openapi를 json호출해서 jsonsimple db 저장
+public class openapiController { //openapi를 json호출해서 jsonsimple로 db 저장
     private final ParkingService parkingService;
     private final ParkingRepository parkingRepository;
     @Autowired
@@ -37,10 +37,11 @@ public class openapiController { //openapi를 json호출해서 jsonsimple db 저
     public String loadSaveParkingApi() {
         String result = "";
         try {
-            for(int page=1;page<2677;page++) { // 총 데이터가 16062개라 /6 해서 모두다 가져오기
+            // 총 데이터가 16062개라 /6 = 2677 해서 모두다 가져오기
+            for(int page=1;page<50;page++) {
                 // API URL 설정
-                URL url = new URL(openapiUrl +
-                        "&serviceKey=" + serviceKey + "&pageNo=" + page  +"&numOfRows=6" + "&type=json");
+                URL url = new URL(openapiUrl + "&serviceKey=" + serviceKey +
+                        "&pageNo=" + page  +"&numOfRows=20" + "&type=json");
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -85,7 +86,9 @@ public class openapiController { //openapi를 json호출해서 jsonsimple db 저
                             (String) data.get("metpay"),                    // 결제 방식
                             (String) data.get("spcmnt"),                    // 특이 사항
                             (String) data.get("institutionNm"),             // 관리 기관 이름
-                            (String) data.get("phoneNumber")                // 전화번호
+                            (String) data.get("phoneNumber"),               // 전화번호
+                            (String) data.get("latitude"),                  // 위도 (없을 수 있음)
+                            (String) data.get("longitude")             // 경도 (없을
                     );
                     parkingService.save(parkingInfo);
                 }
@@ -96,4 +99,5 @@ public class openapiController { //openapi를 json호출해서 jsonsimple db 저
         }
         return "께비";
     }
+
 }
