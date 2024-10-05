@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -26,11 +27,8 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
     }
 
     //환경변수에서 serviceKey를 가져옴
-    @Value("${serviceKey}")
-    private String serviceKey;
-
-    @Value("${openapiUrl}")
-    private String openapiUrl;
+    @Value("${serviceKey}") private String serviceKey;
+    @Value("${openapiUrl}") private String openapiUrl;
 
     //api 요청 후 db 저장
     @GetMapping("/parking")
@@ -100,4 +98,8 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
         return "께비";
     }
 
+    @GetMapping("/search")
+    public List<Parking> searchParkplace(@RequestParam String parkplace){
+        return parkingService.searchparkplace(parkplace);
+    }
 }

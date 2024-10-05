@@ -19,7 +19,7 @@ public class Parking {
     private String prkplceNm; // 주차장 이름
     private String prkplceSe; // 주차장 종류 (공영/민영)
     private String prkplceType; // 주차장 유형 (노상/노외)
-    private String rdnmadr; // 도로명 주소
+    private String rdnmadr; // 도로명 주소 (없을 수 있음)
     private String lnmadr; // 지번 주소 (없을 수 있음)
     private String prkcmprt; // 주차 가능 대수
     private String operDay;       // 운영 요일 (평일/토요일/공휴일)
