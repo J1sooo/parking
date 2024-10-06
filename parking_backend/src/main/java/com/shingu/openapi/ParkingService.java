@@ -21,6 +21,7 @@ public class ParkingService {
         return parkingRepository.save(parking);
     }
 
+    // 검색기능(제목 주소 도로명주소)
     public List<Parking> searchparkplace(String parkplace){
         return parkingRepository.searchByAddressOrName(parkplace);
     }

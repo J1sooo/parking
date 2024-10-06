@@ -86,7 +86,7 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
                             (String) data.get("institutionNm"),             // 관리 기관 이름
                             (String) data.get("phoneNumber"),               // 전화번호
                             (String) data.get("latitude"),                  // 위도 (없을 수 있음)
-                            (String) data.get("longitude")             // 경도 (없을
+                            (String) data.get("longitude")                  // 경도 (없을
                     );
                     parkingService.save(parkingInfo);
                 }
@@ -98,8 +98,10 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
         return "께비";
     }
 
+    // 검색기능(제목 주소 도로명주소)
     @GetMapping("/search")
     public List<Parking> searchParkplace(@RequestParam String parkplace){
         return parkingService.searchparkplace(parkplace);
     }
+
 }
