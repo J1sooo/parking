@@ -13,6 +13,7 @@ public class kakaoapiController {
         this.addressService = addressService;
     }
 
+    // 확인용
     @GetMapping("/searchXY")
     public ResponseEntity<kakaoSearchDto> searchAddress(@RequestParam String address) {
         kakaoSearchDto result = addressService.searchAddress(address);

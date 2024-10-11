@@ -8,6 +8,7 @@ public class kakaoSearchDto {
     private List<Document> documents;
     @Data
     public static class Document {
+        private String address_name; // 포스트맨 주소 이름 확인용
         private String x;
         private String y;
     }
