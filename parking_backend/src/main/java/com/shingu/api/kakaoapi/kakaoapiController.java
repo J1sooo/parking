@@ -16,7 +16,7 @@ public class kakaoapiController {
     // 확인용
     @GetMapping("/searchXY")
     public ResponseEntity<kakaoSearchDto> searchAddress(@RequestParam String address) {
-        kakaoSearchDto result = addressService.searchAddress(address);
+        kakaoSearchDto result = addressService.searchAddressXY(address);
         return ResponseEntity.ok(result);
     }
 }

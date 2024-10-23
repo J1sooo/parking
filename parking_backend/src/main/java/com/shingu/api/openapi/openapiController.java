@@ -1,7 +1,8 @@
-package com.shingu.openapi;
+package com.shingu.api.openapi;
 
-import com.shingu.openapi.DDD.Parking;
-import com.shingu.openapi.DDD.ParkingRepository;
+import com.shingu.api.kakaoapi.kakaoSearchDto;
+import com.shingu.api.kakaoapi.kakaoapiService;
+import com.shingu.api.openapi.DDD.Parking;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,16 +20,24 @@ import java.util.List;
 @RequestMapping("/api")
 public class openapiController { //openapi를 json호출해서 jsonsimple로 db 저장
     private final ParkingService parkingService;
-    private final ParkingRepository parkingRepository;
+    private final kakaoapiService kakaoapiService;
     @Autowired
-    public openapiController(ParkingService parkingService, ParkingRepository parkingRepository) {
+    public openapiController(ParkingService parkingService, com.shingu.api.kakaoapi.kakaoapiService kakaoapiService) {
         this.parkingService = parkingService;
-        this.parkingRepository = parkingRepository;
+        this.kakaoapiService = kakaoapiService;
     }
 
     //환경변수에서 serviceKey를 가져옴
     @Value("${serviceKey}") private String serviceKey;
     @Value("${openapiUrl}") private String openapiUrl;
+
+    // 주소를 통해 좌표를 검색하는 메서드
+    private kakaoSearchDto searchXYByAddress(String address) {
+        if (address != null && !address.isEmpty()) {
+            return kakaoapiService.searchAddressXY(address);
+        }
+        return null;
+    }
 
     //api 요청 후 db 저장
     @GetMapping("/parking")
@@ -59,7 +68,25 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
                 // 데이터베이스에 저장하는 과정
                 for(int i=0;i<items.size();i++) {
                     JSONObject data = (JSONObject) items.get(i);
+                    String latitude = (String) data.get("latitude");
+                    String longitude = (String) data.get("longitude");
 
+                    if (latitude == null || longitude == null || latitude.isEmpty() || longitude.isEmpty()) {
+                        kakaoSearchDto kakaoResult;
+
+                        // rdnmadr, lnmadr으로 위도 경도 검색
+                        String[] addressFields = {"rdnmadr", "lnmadr"};
+                        for (String field : addressFields) {
+                            String address = (String) data.get(field);
+                            kakaoResult = searchXYByAddress(address);
+
+                            if (kakaoResult != null && kakaoResult.getDocuments() != null && !kakaoResult.getDocuments().isEmpty()) {
+                                latitude = kakaoResult.getDocuments().get(0).getY();
+                                longitude = kakaoResult.getDocuments().get(0).getX();
+                                break;
+                            }
+                        }
+                    }
                     Parking parkingInfo = new Parking(
                             (String) data.get("prkplceNo"),                // 주차장 번호
                             (String) data.get("prkplceNm"),                // 주차장 이름
@@ -85,15 +112,15 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
                             (String) data.get("spcmnt"),                    // 특이 사항
                             (String) data.get("institutionNm"),             // 관리 기관 이름
                             (String) data.get("phoneNumber"),               // 전화번호
-                            (String) data.get("latitude"),                  // 위도 (없을 수 있음)
-                            (String) data.get("longitude")                  // 경도 (없을
+                            latitude,  // 수정된 위도
+                            longitude  // 수정된 경도
                     );
                     parkingService.save(parkingInfo);
                 }
             }
             return "나이수";
         } catch (Exception e) {
-            e.printStackTrace(); // 개선 필요: 로깅 프레임워크 사용
+            e.printStackTrace();
         }
         return "께비";
     }
@@ -104,4 +131,13 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
         return parkingService.searchparkplace(parkplace);
     }
 
+    @GetMapping("/find1kmInParking")
+    public List<Parking> find1kmInParking(@RequestParam Float lat, @RequestParam Float lon){
+        return parkingService.find1kmInParking(lat, lon);
+    }
+
+    @GetMapping("/allParking")
+    public List<Parking> getAllParking() {
+        return parkingService.getAllParking();
+    }
 }

@@ -1,4 +1,4 @@
-package com.shingu.openapi.DDD;
+package com.shingu.api.openapi.DDD;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data @Entity
 @Table(name = "parking") //데이블 이름
-@NoArgsConstructor
+@NoArgsConstructor // this
 @AllArgsConstructor
 public class Parking {
     @Id

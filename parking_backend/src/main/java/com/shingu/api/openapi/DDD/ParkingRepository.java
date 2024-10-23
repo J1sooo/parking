@@ -1,4 +1,4 @@
-package com.shingu.openapi.DDD;
+package com.shingu.api.openapi.DDD;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

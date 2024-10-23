@@ -12,7 +12,8 @@ import org.springframework.web.client.RestTemplate;
 public class kakaoapiService {
     @Value("${rest_api}") private String restapiKey;
 
-    public kakaoSearchDto searchAddress(String address) {
+    // 좌표 없는 데이터 좌표 찾기
+    public kakaoSearchDto searchAddressXY(String address) {
         String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="+address;
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -29,12 +30,14 @@ public class kakaoapiService {
             while (true){
                 String finalAddress;
                 System.out.println(address);
-                if (address.endsWith("읍") || address.endsWith("면") ||
+                if (address.endsWith("도") || address.endsWith("시") ||
+                    address.endsWith("군") || address.endsWith("구") ||
+                    address.endsWith("읍") || address.endsWith("면") ||
                     address.endsWith("동") || address.endsWith("리")) {
-                    return null;
+                    break;
                 } else {
                     finalAddress = address.substring(0, address.length() - 1);
-                    return searchAddress(finalAddress);
+                    return searchAddressXY(finalAddress);
                 }
             }
         }
