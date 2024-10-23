@@ -15,8 +15,14 @@ public class kakaoapiController {
 
     // 확인용
     @GetMapping("/searchXY")
-    public ResponseEntity<kakaoSearchDto> searchAddress(@RequestParam String address) {
+    public ResponseEntity<kakaoSearchDto> searchAddressXY(@RequestParam String address) {
         kakaoSearchDto result = addressService.searchAddressXY(address);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/MoveLocation")
+    public ResponseEntity<kakaoSearchDto> moveLocationMap(@RequestParam String searchWord) {
+        kakaoSearchDto result = addressService.moveLocationMap(searchWord);
         return ResponseEntity.ok(result);
     }
 }

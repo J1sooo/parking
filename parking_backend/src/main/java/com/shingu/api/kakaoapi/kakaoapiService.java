@@ -12,16 +12,22 @@ import org.springframework.web.client.RestTemplate;
 public class kakaoapiService {
     @Value("${rest_api}") private String restapiKey;
 
-    // 좌표 없는 데이터 좌표 찾기
-    public kakaoSearchDto searchAddressXY(String address) {
-        String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="+address;
+    public kakaoSearchDto kakaoApiRequest(String apiUrl) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", restapiKey);
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<kakaoSearchDto> response = restTemplate.exchange(apiUrl , HttpMethod.GET, entity, kakaoSearchDto.class);
-        kakaoSearchDto result = response.getBody();
+        ResponseEntity<kakaoSearchDto> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, kakaoSearchDto.class);
+        return response.getBody();
+    }
+
+
+
+    // 좌표 없는 데이터 좌표 찾기
+    public kakaoSearchDto searchAddressXY(String address) {
+        String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="+address;
+        kakaoSearchDto result = kakaoApiRequest(apiUrl);
 
         // 검색 결과가 없을 경우 address를 줄여나가며 재검색
         if (result == null || result.getDocuments().isEmpty()) {
@@ -40,6 +46,18 @@ public class kakaoapiService {
                     return searchAddressXY(finalAddress);
                 }
             }
+        }
+        return result;
+    }
+
+    // 검색시 좌표 이동
+    public kakaoSearchDto moveLocationMap(String searchWord) {
+        String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query=" + searchWord;
+        kakaoSearchDto result = kakaoApiRequest(apiUrl);
+
+        if (result==null || result.getDocuments().isEmpty()){
+            apiUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + searchWord;
+            result = kakaoApiRequest(apiUrl);
         }
         return result;
     }
