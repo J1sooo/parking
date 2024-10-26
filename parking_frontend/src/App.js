@@ -1,15 +1,16 @@
 import './App.css';
+import {Routes, Route} from "react-router-dom";
 import Main from "./page/Main";
-import { Routes, Route } from "react-router-dom";
 
 function App() {
-  return (
-    <div className="page">
-      <Routes>
-        <Route path="/" element={<Main/>} />
-      </Routes>
-    </div>
-  );
+    return (
+        <div className="page">
+            <Routes>
+                <Route path="/search/:keyword" element={<Main />} />
+                <Route path="/" element={<Main />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
