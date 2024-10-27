@@ -27,27 +27,34 @@ public class kakaoapiService {
         if (address == null || address.isEmpty()) {
             return null;
         }
-        String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query="+address;
+        System.out.println(address); // 주소 확인용
+        // 첫 번째 url 주소
+        String apiUrl = "https://dapi.kakao.com/v2/local/search/address.json?query=" + address;
         kakaoSearchDto result = kakaoApiRequest(apiUrl);
 
-        // 검색 결과가 없을 경우 address를 줄여나가며 재검색
         if (result == null || result.getDocuments().isEmpty()) {
-            address = address.replaceAll(" ",""); // 공백 제거
-            // 주소에는 무조건 읍,면,동,리가 들어가므로 무한루프 X
-            String finalAddress;
-            System.out.println(address);
-            if (address.endsWith("도") || address.endsWith("시") ||
-                address.endsWith("군") || address.endsWith("구") ||
-                address.endsWith("읍") || address.endsWith("면") ||
-                address.endsWith("동") || address.endsWith("리")) {
-                return searchAddressXY(null);
-            } else {
-                finalAddress = address.substring(0, address.length() - 1);
-                return searchAddressXY(finalAddress);
+            address = address.replaceAll(" ", ""); // 공백 제거
+            // 두 번째 url 키워드
+            apiUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + address;
+            result = kakaoApiRequest(apiUrl);
+
+            if (result == null || result.getDocuments().isEmpty()) {
+                if (address.endsWith("도") || address.endsWith("시") ||
+                    address.endsWith("군") || address.endsWith("구") ||
+                    address.endsWith("읍") || address.endsWith("면") ||
+                    address.endsWith("동") || address.endsWith("리")) {
+                    return null;
+                } else {
+                    String finalAddress = address.substring(0, address.length() - 1);
+                    return searchAddressXY(finalAddress);
+                }
             }
         }
+
+        // 검색 성공 시 결과 반환
         return result;
     }
+
 
     // 검색시 좌표 이동
     public kakaoSearchDto moveLocationMap(String searchWord) {
