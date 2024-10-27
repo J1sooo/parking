@@ -25,4 +25,10 @@ public class kakaoapiController {
         kakaoSearchDto result = addressService.moveLocationMap(searchWord);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/UserLocation")
+    public ResponseEntity<kakaoSearchDto> userLocation(@RequestParam Double Ylat, Double Xlon) {
+        kakaoSearchDto result = addressService.userLocation(Ylat, Xlon);
+        return ResponseEntity.ok(result);
+    }
 }
