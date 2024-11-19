@@ -24,6 +24,7 @@ public class kakaoSearchDto {
     @Data
     public static class address{
         private String address_name; // 주소 이름 확인용
+        private String region_2depth_name; // 좌표로 찾은 사용자 주소
         private String region_3depth_name; // 좌표로 찾은 사용자 주소
     }
 }

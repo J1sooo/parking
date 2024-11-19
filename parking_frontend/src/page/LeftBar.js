@@ -8,6 +8,7 @@ function LeftBar() {
     const [reKeyword, setReKeyword] = useState(keyword || "");
     const [result, setResult] = useState([]); // 검색 결과
     const [find1kmResult, setFind1kmResult] = useState([])
+    const [UserLocation, setUserLocation] = useState([])
     const [XYmap, setXYmap] = useState([]); // 검색 위도
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -29,12 +30,23 @@ function LeftBar() {
                 }
             );
         }
-        // const find1kmInParking = async () => {
-        //     const find1kmresp = await fetch(`/api/find1kmInParking?lat=${centerLat}&lon=${centerLon}`);
-        //     const find1kmdata = await find1kmresp.json();
-        //     setFind1kmResult(find1kmdata);
-        // }
-        // find1kmInParking();
+        const find1kmInParking = async () => {
+            const find1kmresp = await fetch(`/api/find1kmInParking?lat=${latitude}&lon=${longitude}`);
+            const find1kmdata = await find1kmresp.json();
+            setFind1kmResult(find1kmdata);
+        }
+        find1kmInParking();
+        const userLocation = async () => {
+            const userresp = await fetch(`UserLocation?Ylat=${latitude}&Xlon=${longitude}`);
+            const userlocationdata = await userresp.json();
+
+            const region2 = userlocationdata.documents[0]?.address?.region_2depth_name || "";
+            const region3 = userlocationdata.documents[0]?.address?.region_3depth_name || "";
+
+            const ULocation = `${region2} ${region3}`
+            setUserLocation(ULocation);
+        }
+        userLocation();
     },[dispatch]);
 
     useEffect(() => {
@@ -50,9 +62,9 @@ function LeftBar() {
         };
         parkplaceSearch();
     }, [keyword]);
-    const reSearch = async (e) => {
+    const reSearch = async () => {
         if (!reKeyword || reKeyword.length < 2) return alert("2글자 이상 검색하세요"); // keyword가 없으면 함수 종료
-        navigate(`/main/search/${reKeyword}`); // 검색 후 해당 페이지로 이동
+        navigate(`/search/${reKeyword}`); // 검색 후 해당 페이지로 이동
     };
 
     return (
@@ -76,7 +88,7 @@ function LeftBar() {
                             ))}
                         </ul>
                     ) : (
-                    <p>현재 좌표 {latitude} {longitude}</p>
+                    <p>현재 위치 {UserLocation}</p>
                     )}
                 </>
                 <div>
