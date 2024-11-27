@@ -24,14 +24,17 @@ public class ParkingService {
     private final kakaoapiService kakaoapiService;
 
     @Autowired
-    public ParkingService(ParkingRepository parkingRepository, com.shingu.api.kakaoapi.kakaoapiService kakaoapiService) {
+    public ParkingService(ParkingRepository parkingRepository,
+            com.shingu.api.kakaoapi.kakaoapiService kakaoapiService) {
         this.parkingRepository = parkingRepository;
         this.kakaoapiService = kakaoapiService;
     }
 
-    //환경변수에서 serviceKey를 가져옴
-    @Value("${serviceKey}") private String serviceKey;
-    @Value("${openapiUrl}") private String openapiUrl;
+    // 환경변수에서 serviceKey를 가져옴
+    @Value("${serviceKey}")
+    private String serviceKey;
+    @Value("${openapiUrl}")
+    private String openapiUrl;
 
     // 주차장 정보를 데이터베이스에 저장
     public Parking save(Parking parking) {
@@ -41,7 +44,7 @@ public class ParkingService {
             for(int page=1;page<50;page++) {
                 // API URL 설정
                 URL url = new URL(openapiUrl + "&serviceKey=" + serviceKey +
-                        "&pageNo=" + page  +"&numOfRows=20" + "&type=json");
+                        "&pageNo=" + page + "&numOfRows=20" + "&type=json");
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -81,32 +84,32 @@ public class ParkingService {
                         }
                     }
                     Parking parkingInfo = new Parking(
-                            (String) data.get("prkplceNo"),                // 주차장 번호
-                            (String) data.get("prkplceNm"),                // 주차장 이름
-                            (String) data.get("prkplceSe"),                // 주차장 종류 (공영/민영)
-                            (String) data.get("prkplceType"),              // 주차장 유형 (노상/노외)
-                            (String) data.get("rdnmadr"),                  // 도로명 주소
-                            (String) data.get("lnmadr"),                   // 지번 주소
-                            (String) data.get("prkcmprt"),                 // 주차 가능 대수
-                            (String) data.get("operDay"),                  // 운영 요일
-                            (String) data.get("weekdayOperOpenHhmm"),     // 평일 운영 시작 시간
-                            (String) data.get("weekdayOperCloseHhmm"),    // 평일 운영 종료 시간
-                            (String) data.get("satOperOpenHhmm"),          // 토요일 운영 시작 시간
-                            (String) data.get("satOperCloseHhmm"),         // 토요일 운영 종료 시간
-                            (String) data.get("holidayOperOpenHhmm"),      // 공휴일 운영 시작 시간
-                            (String) data.get("holidayCloseHhmm"),         // 공휴일 운영 종료 시간
-                            (String) data.get("parkingchrgeInfo"),         // 주차 요금 정보
-                            (String) data.get("basicTime"),                 // 기본 주차 시간
-                            (String) data.get("basicCharge"),               // 기본 요금
-                            (String) data.get("addUnitTime"),               // 추가 단위 시간
-                            (String) data.get("addUnitCharge"),             // 추가 단위 요금
-                            (String) data.get("monthCmmtkt"),               // 월 정기권 요금
-                            (String) data.get("metpay"),                    // 결제 방식
-                            (String) data.get("spcmnt"),                    // 특이 사항
-                            (String) data.get("institutionNm"),             // 관리 기관 이름
-                            (String) data.get("phoneNumber"),               // 전화번호
-                            latitude,  // 수정된 위도
-                            longitude  // 수정된 경도
+                            (String) data.get("prkplceNo"), // 주차장 번호
+                            (String) data.get("prkplceNm"), // 주차장 이름
+                            (String) data.get("prkplceSe"), // 주차장 종류 (공영/민영)
+                            (String) data.get("prkplceType"), // 주차장 유형 (노상/노외)
+                            (String) data.get("rdnmadr"), // 도로명 주소
+                            (String) data.get("lnmadr"), // 지번 주소
+                            (String) data.get("prkcmprt"), // 주차 가능 대수
+                            (String) data.get("operDay"), // 운영 요일
+                            (String) data.get("weekdayOperOpenHhmm"), // 평일 운영 시작 시간
+                            (String) data.get("weekdayOperCloseHhmm"), // 평일 운영 종료 시간
+                            (String) data.get("satOperOpenHhmm"), // 토요일 운영 시작 시간
+                            (String) data.get("satOperCloseHhmm"), // 토요일 운영 종료 시간
+                            (String) data.get("holidayOperOpenHhmm"), // 공휴일 운영 시작 시간
+                            (String) data.get("holidayCloseHhmm"), // 공휴일 운영 종료 시간
+                            (String) data.get("parkingchrgeInfo"), // 주차 요금 정보
+                            (String) data.get("basicTime"), // 기본 주차 시간
+                            (String) data.get("basicCharge"), // 기본 요금
+                            (String) data.get("addUnitTime"), // 추가 단위 시간
+                            (String) data.get("addUnitCharge"), // 추가 단위 요금
+                            (String) data.get("monthCmmtkt"), // 월 정기권 요금
+                            (String) data.get("metpay"), // 결제 방식
+                            (String) data.get("spcmnt"), // 특이 사항
+                            (String) data.get("institutionNm"), // 관리 기관 이름
+                            (String) data.get("phoneNumber"), // 전화번호
+                            latitude, // 수정된 위도
+                            longitude // 수정된 경도
                     );
                     parkingRepository.save(parkingInfo);
                 }
@@ -123,41 +126,11 @@ public class ParkingService {
     }
 
     // 검색기능(제목 주소 도로명주소)
-    public List<Parking> searchparkplace(String parkplace){
+    public List<Parking> searchparkplace(String parkplace) {
         return parkingRepository.searchByAddressOrName(parkplace);
     }
 
-    // 지도 범위 계산
-    private static final double EARTH_RADIUS = 6371; // 지구의 반지름
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1) * Math.cos(lat2) *
-                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return EARTH_RADIUS * c; // 두 지점 간의 거리 km단위
-    }
-
-    public List<Parking> find1kmInParking(float inputLat, float inputLon){
-        List<Parking> find1kmParking = new ArrayList<>();
-        List<Parking> allParking = parkingRepository.findAll(); // 모든 주차장 조회
-
-        for (Parking parking : allParking) {
-            if (!parking.getLatitude().isEmpty() && !parking.getLongitude().isEmpty()) {
-                float dbLatitude = Float.parseFloat(parking.getLatitude());
-                float dbLongitude = Float.parseFloat(parking.getLongitude());
-
-                double distance = calculateDistance(inputLat, inputLon, dbLatitude, dbLongitude);
-                if (distance <= 1.0) { // 1km 이내
-                    find1kmParking.add(parking); // 1km 이내의 주차장 추가
-                }
-            }
-        }
-        return find1kmParking;
+    public List<Parking> find1kmInParking(float inputLat, float inputLon)  {
+        return parkingRepository.findParkingWithinDistance(inputLat, inputLon, 5.0);
     }
 }
