@@ -5,6 +5,7 @@ const initialState = {
     longitude: 126.570667,
     loading: false,
     error: null,
+    source: 'default'
 };
 
 const locationSlice = createSlice({
@@ -14,6 +15,7 @@ const locationSlice = createSlice({
         setLocation: (state, action) => {
             state.latitude = action.payload.latitude;
             state.longitude = action.payload.longitude;
+            state.source = action.payload.source;
             state.status = 'succeeded';
         },
         setLocationError: (state, action) => {
