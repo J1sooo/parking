@@ -15,8 +15,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParkingService {
@@ -41,10 +41,10 @@ public class ParkingService {
         String result = "";
         try {
             // 총 데이터가 16062개라 /6 = 2677 해서 모두다 가져오기
-            for(int page=1;page<50;page++) {
+            for (int page = 1; page < 16; page++) {
                 // API URL 설정
                 URL url = new URL(openapiUrl + "&serviceKey=" + serviceKey +
-                        "&pageNo=" + page + "&numOfRows=20" + "&type=json");
+                        "&pageNo=" + page + "&numOfRows=1000" + "&type=json");
 
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -62,7 +62,7 @@ public class ParkingService {
                 JSONArray items = (JSONArray) body.get("items");
 
                 // 데이터베이스에 저장하는 과정
-                for(int i=0;i<items.size();i++) {
+                for (int i = 0; i < items.size(); i++) {
                     JSONObject data = (JSONObject) items.get(i);
                     String latitude = (String) data.get("latitude");
                     String longitude = (String) data.get("longitude");
@@ -120,17 +120,16 @@ public class ParkingService {
         return parking;
     }
 
-    // 모든 주차장 가져오기
-    public List<Parking> getAllParking() {
-        return parkingRepository.findAll();
-    }
-
     // 검색기능(제목 주소 도로명주소)
     public List<Parking> searchparkplace(String parkplace) {
         return parkingRepository.searchByAddressOrName(parkplace);
     }
 
-    public List<Parking> find1kmInParking(float inputLat, float inputLon)  {
-        return parkingRepository.findParkingWithinDistance(inputLat, inputLon, 5.0);
+    public List<Parking> findKmInParking(float inputLat, float inputLon)  {
+        return parkingRepository.findParkingWithinDistance(inputLat, inputLon, 2.0);
+    }
+
+    public Optional<Parking> findByPrkplceNo(String prkplceNo) {
+        return parkingRepository.findById(prkplceNo);
     }
 }

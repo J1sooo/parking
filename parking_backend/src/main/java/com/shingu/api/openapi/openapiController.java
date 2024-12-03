@@ -5,9 +5,11 @@ import com.shingu.api.kakaoapi.kakaoapiService;
 import com.shingu.api.openapi.DDD.Parking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -17,10 +19,6 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
     public openapiController(ParkingService parkingService) {
         this.parkingService = parkingService;
     }
-
-    //환경변수에서 serviceKey를 가져옴
-    @Value("${serviceKey}") private String serviceKey;
-    @Value("${openapiUrl}") private String openapiUrl;
 
     //api 요청 후 db 저장
     @GetMapping("/parking")
@@ -34,13 +32,13 @@ public class openapiController { //openapi를 json호출해서 jsonsimple로 db 
         return parkingService.searchparkplace(parkplace);
     }
 
-    @GetMapping("/find1kmInParking")
-    public List<Parking> find1kmInParking(@RequestParam Float lat, @RequestParam Float lon){
-        return parkingService.find1kmInParking(lat, lon);
+    @GetMapping("/findKmInParking")
+    public List<Parking> findKmInParking(@RequestParam Float lat, @RequestParam Float lon){
+        return parkingService.findKmInParking(lat, lon);
     }
 
-    @GetMapping("/allParking")
-    public List<Parking> getAllParking() {
-        return parkingService.getAllParking();
+    @GetMapping("/parking/{prkplceNo}")
+    public Optional<Parking> getParkingByPrkplceNo(@PathVariable String prkplceNo) {
+        return parkingService.findByPrkplceNo(prkplceNo);
     }
 }

@@ -18,20 +18,11 @@ const locationSlice = createSlice({
             state.source = action.payload.source;
             state.status = 'succeeded';
         },
-        setLocationError: (state, action) => {
-            state.status = 'failed';
-            state.error = action.payload;
-        },
-        setLoading: (state) => {
-            state.status = 'loading';
-        },
     },
 });
 
 export const {
-    setLocation,
-    setLocationError,
-    setLoading,
+    setLocation
 } = locationSlice.actions;
 
 export default locationSlice.reducer;
