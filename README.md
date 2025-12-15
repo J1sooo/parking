@@ -4,7 +4,7 @@
 ## 📌 프로젝트 소개
 공공데이터를 활용해서 주차장 위치, 가격, 정보를 한눈에 알아보고 검색을 통해 원하는 주차장을 찾을 수 있는 서비스입니다. </br>
 (모두의 주차장 어플 클론 코딩)
-- 작업 기간: 2023.09.20 - 2023.12.03
+- 작업 기간: 2023.09.24 - 2023.12.03
 - 인원: 1명
 
 ## 😎 Stack
@@ -50,6 +50,16 @@
 - 주차 요금 정보 (기본 요금, 추가 요금, 월 정기권)
 - 결제 방식
 - 관리 기관 및 연락처
+
+## ⚙️ PARKING 시스템 다이어그램
+<img width="2340" height="1856" alt="parking 시스템 다이어그램" src="https://github.com/user-attachments/assets/a4ff50cd-5be9-4652-ac86-a85386869964" />
+
+## 🔗 PARKING 시퀀스 다이어그램
+- 공공 데이터 주차장 저장 시퀀스
+<img width="3332" height="2244" alt="parking 시퀀스 다이어그램 1" src="https://github.com/user-attachments/assets/de521d79-b4f5-42e3-81dd-41e4386f552d" />
+
+- 주차장 검색 기능 시퀀스
+<img width="3288" height="3000" alt="parking 시퀀스 다이어그램 2" src="https://github.com/user-attachments/assets/07fb18d2-a3ba-432a-9580-af1122681d42" />
 
 ## 🖼️ 핵심 기능 스크린샷
 ### 메인 화면
