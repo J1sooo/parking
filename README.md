@@ -55,10 +55,10 @@
 <img width="2340" height="1856" alt="parking 시스템 다이어그램" src="https://github.com/user-attachments/assets/a4ff50cd-5be9-4652-ac86-a85386869964" />
 
 ## 🔗 PARKING 시퀀스 다이어그램
-- 공공 데이터 주차장 저장 시퀀스
+### 공공 데이터 주차장 저장 시퀀스
 <img width="3332" height="2244" alt="parking 시퀀스 다이어그램 1" src="https://github.com/user-attachments/assets/de521d79-b4f5-42e3-81dd-41e4386f552d" />
 
-- 주차장 검색 기능 시퀀스
+### 주차장 검색 기능 시퀀스
 <img width="3288" height="3000" alt="parking 시퀀스 다이어그램 2" src="https://github.com/user-attachments/assets/07fb18d2-a3ba-432a-9580-af1122681d42" />
 
 ## 🖼️ 핵심 기능 스크린샷
